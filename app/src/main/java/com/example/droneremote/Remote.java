@@ -1,6 +1,7 @@
 package com.example.droneremote;
 
 import androidx.appcompat.app.AppCompatActivity;
+import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -44,6 +45,22 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         checkBTState();
+
+        JoystickView leftStick = (JoystickView) findViewById(R.id.leftStick);
+        leftStick.setOnMoveListener(new JoystickView.OnMoveListener() {
+            @Override
+            public void onMove(int angle, int strength) {
+                // do whatever you want
+            }
+        });
+
+        JoystickView rightStick = (JoystickView) findViewById(R.id.rightStick);
+        rightStick.setOnMoveListener(new JoystickView.OnMoveListener() {
+            @Override
+            public void onMove(int angle, int strength) {
+                // do whatever you want
+            }
+        });
 
     }
 
