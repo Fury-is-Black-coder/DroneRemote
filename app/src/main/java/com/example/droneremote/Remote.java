@@ -33,7 +33,7 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     // MAC-адрес Bluetooth модуля
-    private static String address = "88:25:83:F0:14:AC";
+    private static String address = "00:19:10:09:2C:6C";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
 
         findViewById(R.id.btnOn).setOnClickListener(this);
         findViewById(R.id.btnOff).setOnClickListener(this);
+        findViewById(R.id.btnDisconect).setOnClickListener(this);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         checkBTState();
@@ -72,10 +73,13 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
             sendData("1");
             Toast.makeText(getBaseContext(), "Включаем LED", Toast.LENGTH_SHORT).show();
         }
-
         if (i == R.id.btnOff){
             sendData("0");
             Toast.makeText(getBaseContext(), "Выключаем LED", Toast.LENGTH_SHORT).show();
+        }
+        if (i == R.id.btnDisconect){
+            startActivity(new Intent(Remote.this, MainActivity.class));
+            Toast.makeText(getBaseContext(), "Disconnected", Toast.LENGTH_SHORT).show();
         }
     }
 
