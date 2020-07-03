@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -35,6 +36,14 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
     // MAC-адрес Bluetooth модуля
     private static String address = "00:19:10:09:2C:6C";
 
+    Thread channel_thread;
+    String ThreadTag = "Channel Thread: ";
+
+    private TextView wChannelInfo;
+
+    //Variables needed for works with Sending data
+    int Throttle, Yaw, Pitch, Roll;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +52,22 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
         findViewById(R.id.btnOn).setOnClickListener(this);
         findViewById(R.id.btnOff).setOnClickListener(this);
         findViewById(R.id.btnDisconect).setOnClickListener(this);
+        wChannelInfo = (TextView) findViewById(R.id.textView_sendingdata);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         checkBTState();
 
-        JoystickView leftStick = (JoystickView) findViewById(R.id.leftStick);
+        final JoystickView leftStick = (JoystickView) findViewById(R.id.leftStick);
         leftStick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
                 // do whatever you want
+//                Throttle = leftStick.getNormalizedY();
+//                Yaw = Math.abs(Integer.parseInt(String.format("%03d", leftStick.getNormalizedX()))-100);
+//                wChannelInfo.setText("Send\nt " + String.format("%03d", Throttle) +"\ny " +Yaw);
+                wChannelInfo.setText(String.format("x%03d:y%03d",
+                        leftStick.getNormalizedX(),
+                        leftStick.getNormalizedY()));
             }
         });
 
@@ -62,6 +78,26 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
                 // do whatever you want
             }
         });
+
+        channel_thread = new Thread((new Runnable() {
+            @Override
+            public void run() {
+                while (!channel_thread.isInterrupted()){
+                    Log.i(ThreadTag, "Send data ");
+
+                    try {
+                        Thread.sleep(1000);
+                    }
+                    catch (InterruptedException ex){
+                        break;
+                    }
+                }
+            }
+        }));
+
+//        channel_thread.start();
+
+
 
     }
 
