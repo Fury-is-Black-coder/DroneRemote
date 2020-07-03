@@ -89,7 +89,7 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
 
         channel_thread = new Thread((new Runnable() {
             @Override
-            public void run() {
+            public synchronized void run() {
                 while (!channel_thread.isInterrupted()){
 
                     Log.i(ThreadTag, "Send data "
@@ -99,16 +99,16 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
                             +" "+String.format("%03d", Math.round(Roll*2.54)));
 
                     // Wysyłanie treści na Arduino
-//                    sendData("0");
+                    sendData("c" + String.format("%03d", Math.round(Math.abs(Throttle-50)*5.08))
+                            + String.format("%03d", Math.round(Yaw*2.54))
+                            + String.format("%03d", Math.round(Math.abs(Pitch-100)*2.54))
+                            + String.format("%03d", Math.round(Roll*2.54)));
 
 
-//
-//                    String.format("%03d", Math.round(Math.abs(Throttle-50)*5.08))
-//                            +String.format("%03d", Math.round(Yaw*2.54))
-//                            +String.format("%03d", Math.round(Math.abs(Pitch-100)*2.54))
-//                            +String.format("%03d", Math.round(Roll*2.54))
-//
-//
+
+
+
+
 
 
                     try {
@@ -120,7 +120,7 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
                 }
             }
         }));
-        channel_thread.start();
+//        channel_thread.start();
 
 
 
@@ -131,12 +131,18 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
 
         int i = view.getId();
         if (i == R.id.btnOn){
-            sendData("c255255255255");
-//            sendData("1");
+            sendData("1");
+            channel_thread.start();
+            Log.i(ThreadTag, "Thread was Started");
             Toast.makeText(getBaseContext(), "Включаем LED", Toast.LENGTH_SHORT).show();
         }
         if (i == R.id.btnOff){
             sendData("0");
+            try {
+                channel_thread.interrupt();
+                Log.i(ThreadTag, "Thread is Closed");
+            }catch (Exception ex){}
+
             Toast.makeText(getBaseContext(), "Выключаем LED", Toast.LENGTH_SHORT).show();
         }
         if (i == R.id.btnDisconect){
@@ -233,7 +239,7 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
         finish();
     }
 
-    private void sendData(String message) {
+    private synchronized void sendData(String message) {
         byte[] msgBuffer = message.getBytes();
 
         Log.d(TAG, "...Посылаем данные: " + message + "...");
