@@ -40,6 +40,7 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
     String ThreadTag = "Channel Thread: ";
 
     private TextView wChannelInfo;
+    private TextView wChannelInfoRight;
 
     //Variables needed for works with Sending data
     int Throttle, Yaw, Pitch, Roll;
@@ -53,6 +54,7 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
         findViewById(R.id.btnOff).setOnClickListener(this);
         findViewById(R.id.btnDisconect).setOnClickListener(this);
         wChannelInfo = (TextView) findViewById(R.id.textView_sendingdata);
+        wChannelInfoRight = (TextView) findViewById(R.id.textView_sendingdataRight);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         checkBTState();
@@ -65,17 +67,20 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
 //                Throttle = leftStick.getNormalizedY();
 //                Yaw = Math.abs(Integer.parseInt(String.format("%03d", leftStick.getNormalizedX()))-100);
 //                wChannelInfo.setText("Send\nt " + String.format("%03d", Throttle) +"\ny " +Yaw);
-                wChannelInfo.setText(String.format("x%03d:y%03d",
+                wChannelInfo.setText(angle + "°\n" + strength + "%\n" + String.format("x%03d:y%03d",
                         leftStick.getNormalizedX(),
                         leftStick.getNormalizedY()));
+
             }
         });
 
-        JoystickView rightStick = (JoystickView) findViewById(R.id.rightStick);
+        final JoystickView rightStick = (JoystickView) findViewById(R.id.rightStick);
         rightStick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
                 // do whatever you want
+                wChannelInfoRight.setText(angle + "°\n" + strength + "%\n" + rightStick.getNormalizedX() +"\n" +
+                        rightStick.getNormalizedY());
             }
         });
 
@@ -95,7 +100,7 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
             }
         }));
 
-//        channel_thread.start();
+        channel_thread.start();
 
 
 
