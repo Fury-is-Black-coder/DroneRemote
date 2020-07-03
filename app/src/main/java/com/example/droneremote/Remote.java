@@ -43,7 +43,7 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
     private TextView wChannelInfoRight;
 
     //Variables needed for works with Sending data
-    int Throttle=0, Yaw=50, Pitch=50, Roll=50;
+    int Throttle=50, Yaw=50, Pitch=50, Roll=50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +66,6 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
                 // do whatever you want
                 Throttle = leftStick.getNormalizedY();
                 Yaw = leftStick.getNormalizedX();
-//
-//                ThrottleString = String.format("%03d", Math.abs((leftStick.getNormalizedY()-100))*2.54);
-//                YawString = String.format("%03d", leftStick.getNormalizedX()*2.54);
 
                 wChannelInfo.setText(angle + "°\n" + strength + "%\n" + String.format("x%03d:y%03d",
                         leftStick.getNormalizedX(),
@@ -96,11 +93,22 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
                 while (!channel_thread.isInterrupted()){
 
                     Log.i(ThreadTag, "Send data "
-                            +String.format("%03d", Math.round(Throttle*2.54))
+                            +String.format("%03d", Math.round(Math.abs(Throttle-50)*5.08))
                             +" "+String.format("%03d", Math.round(Yaw*2.54))
-                            +" "+String.format("%03d", Math.round(Pitch*2.54))
+                            +" "+String.format("%03d", Math.round(Math.abs(Pitch-100)*2.54))
                             +" "+String.format("%03d", Math.round(Roll*2.54)));
 
+                    // Wysyłanie treści na Arduino
+//                    sendData("0");
+
+
+//
+//                    String.format("%03d", Math.round(Math.abs(Throttle-50)*5.08))
+//                            +String.format("%03d", Math.round(Yaw*2.54))
+//                            +String.format("%03d", Math.round(Math.abs(Pitch-100)*2.54))
+//                            +String.format("%03d", Math.round(Roll*2.54))
+//
+//
 
 
                     try {
@@ -123,7 +131,8 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
 
         int i = view.getId();
         if (i == R.id.btnOn){
-            sendData("1");
+            sendData("c255255255255");
+//            sendData("1");
             Toast.makeText(getBaseContext(), "Включаем LED", Toast.LENGTH_SHORT).show();
         }
         if (i == R.id.btnOff){
