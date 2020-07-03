@@ -73,38 +73,10 @@
         app:layout_constraintStart_toEndOf="@+id/textView_sendingdata"
         app:layout_constraintTop_toTopOf="@+id/textView_sendingdata" />
 
-    <!--
     <io.github.controlwear.virtual.joystick.android.JoystickView
         android:id="@+id/leftStick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:JV_backgroundColor="#009688"
-        app:JV_borderColor="#009688"
-        app:JV_buttonColor="#FF6E40"
-        app:JV_buttonSizeRatio="15%"
-        app:JV_fixedCenter="false"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="126dp" />
-
-    <io.github.controlwear.virtual.joystick.android.JoystickView
-        android:id="@+id/rightStick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:JV_backgroundColor="#009688"
-        app:JV_borderColor="#009688"
-        app:JV_buttonColor="#FF6E40"
-        app:JV_buttonSizeRatio="15%"
-        app:JV_fixedCenter="false"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="454dp"
-        tools:layout_editor_absoluteY="126dp" />
--->
-
-
-    <io.github.controlwear.virtual.joystick.android.JoystickView
-        android:id="@+id/leftStick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         app:JV_backgroundColor="#009688"
@@ -115,12 +87,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <io.github.controlwear.virtual.joystick.android.JoystickView
         android:id="@+id/rightStick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         app:JV_backgroundColor="#009688"
@@ -131,6 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

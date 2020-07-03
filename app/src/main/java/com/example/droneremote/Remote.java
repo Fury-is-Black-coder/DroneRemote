@@ -43,7 +43,7 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
     private TextView wChannelInfoRight;
 
     //Variables needed for works with Sending data
-    int Throttle, Yaw, Pitch, Roll;
+    int Throttle=0, Yaw=50, Pitch=50, Roll=50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +64,15 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onMove(int angle, int strength) {
                 // do whatever you want
-//                Throttle = leftStick.getNormalizedY();
-//                Yaw = Math.abs(Integer.parseInt(String.format("%03d", leftStick.getNormalizedX()))-100);
-//                wChannelInfo.setText("Send\nt " + String.format("%03d", Throttle) +"\ny " +Yaw);
+                Throttle = leftStick.getNormalizedY();
+                Yaw = leftStick.getNormalizedX();
+//
+//                ThrottleString = String.format("%03d", Math.abs((leftStick.getNormalizedY()-100))*2.54);
+//                YawString = String.format("%03d", leftStick.getNormalizedX()*2.54);
+
                 wChannelInfo.setText(angle + "°\n" + strength + "%\n" + String.format("x%03d:y%03d",
                         leftStick.getNormalizedX(),
                         leftStick.getNormalizedY()));
-
             }
         });
 
@@ -79,8 +81,12 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onMove(int angle, int strength) {
                 // do whatever you want
-                wChannelInfoRight.setText(angle + "°\n" + strength + "%\n" + rightStick.getNormalizedX() +"\n" +
-                        rightStick.getNormalizedY());
+                Pitch = rightStick.getNormalizedY();
+                Roll = rightStick.getNormalizedX();
+
+                wChannelInfoRight.setText(angle + "°\n" + strength + "%\n" + String.format("x%03d:y%03d",
+                        rightStick.getNormalizedX(),
+                        rightStick.getNormalizedY()));
             }
         });
 
@@ -88,10 +94,17 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void run() {
                 while (!channel_thread.isInterrupted()){
-                    Log.i(ThreadTag, "Send data ");
+
+                    Log.i(ThreadTag, "Send data "
+                            +String.format("%03d", Math.round(Throttle*2.54))
+                            +" "+String.format("%03d", Math.round(Yaw*2.54))
+                            +" "+String.format("%03d", Math.round(Pitch*2.54))
+                            +" "+String.format("%03d", Math.round(Roll*2.54)));
+
+
 
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(100);
                     }
                     catch (InterruptedException ex){
                         break;
@@ -99,7 +112,6 @@ public class Remote extends AppCompatActivity implements View.OnClickListener {
                 }
             }
         }));
-
         channel_thread.start();
 
 
